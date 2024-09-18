@@ -33,8 +33,3 @@ CreateNewClan: Create a new clan.<br>
 PlayBattle: Participate in battles.<br>
 BattleLog: View battle history.<br>
 Leaderboards: View top players.<br>
-
-# This is the Backend Spring Game Ranking System Project.<br>
-
-# Frontend Angular Game Ranking System Project(Below)
-https://github.com/sithuhantun91/angular-game-ranking-system.git
