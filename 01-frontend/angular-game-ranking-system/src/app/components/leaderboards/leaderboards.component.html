@@ -1,0 +1,59 @@
+<!-- HEADER -->
+<app-navigation-bar></app-navigation-bar>
+
+<div class="p-3 text-white">
+  <h3 class="fw-normal fs-3" style="letter-spacing: 1px;">Leaderboards</h3>
+
+  <div class="form-floating mb-3">
+    <select class="form-select" id="floatingSelect"
+            aria-label="Floating label select example"
+            (change)="onSelect($event)">
+      <option [value]="1" selected>Top 10 Players</option>
+      <option [value]="2">Top 10 Clans</option>
+    </select>
+    <label for="floatingSelect">Display</label>
+  </div>
+
+  <table *ngIf="selectedValue == 1" id="dataTable" class="table table-hover">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col">No.</th>
+      <th scope="col">Player</th>
+      <th scope="col">Clan</th>
+      <th scope="col">Trophies</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tempUser of topTenUsers; let i = index;">
+        <td>{{ i + 1 }}
+        <td><i class="fa-solid fa-user"></i>{{ tempUser.firstName | pascalCase }} {{ tempUser.lastName | pascalCase }}</td>
+        <td *ngIf="tempUser.clan != null; else elseBlock">
+          <i class="fa-solid fa-people-group"></i>{{ tempUser.clan.name | pascalCase }}
+        </td>
+        <ng-template #elseBlock>
+          <td>No Clan</td>
+        </ng-template>
+        <td><i class="fa-solid fa-trophy"></i>{{ tempUser.trophies }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table *ngIf="selectedValue == 2" id="dataTable2" class="table table-hover">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col">No.</th>
+      <th scope="col">Clan</th>
+      <th scope="col">No. of Members</th>
+      <th scope="col">Total Trophies</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tempClan of topTenClans; let i = index;">
+        <td>{{ i + 1 }}
+        <td><i class="fa-solid fa-people-group"></i>{{ tempClan.clan.name | pascalCase }}</td>
+        <td>{{ tempClan.clan.totalMembers }} / {{ tempClan.clan.maxNumOfMembers }}</td>
+        <td><i class="fa-solid fa-trophy"></i>{{ tempClan.totalTrophies }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

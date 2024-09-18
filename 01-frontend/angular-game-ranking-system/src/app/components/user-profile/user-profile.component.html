@@ -1,0 +1,30 @@
+<!-- HEADER -->
+<app-navigation-bar></app-navigation-bar>
+
+<div class="p-3 text-white">
+  <h3 class="fw-normal fs-3 mb-3" style="letter-spacing: 1px;"><i class="fa-solid fa-user"></i>{{ loginUser.firstName | pascalCase }} {{ loginUser.lastName | pascalCase}}</h3>
+
+  <p>{{ loginUser.email }}</p>
+
+  <div *ngIf="loginUserRoleId != 2 && loginUserRoleId != 3">
+    <div *ngIf="loginUser.clan != null; else elseBlock">
+      <p><i class="fa-solid fa-people-group"></i>{{ loginUser.clan.name | pascalCase}} ({{ loginUser.clanRank.name | pascalCase}})</p>
+    </div>
+
+    <ng-template #elseBlock>
+      <p>No Clan.</p>
+    </ng-template>
+
+    <div>
+      <p>Trophies: <i class="fa-solid fa-trophy"></i>{{ loginUser.trophies }}</p>
+    </div>
+
+    <p>Battle Won: {{ battleWon }}</p>
+
+  </div>
+
+  <button *ngIf="loginUserRoleId != 2 && loginUserRoleId != 3" class="btn btn-primary btn-block text-white mb-3"
+          (click)="redirectToBattleLog()">Battle Log</button>&nbsp;
+  <button class="btn btn-primary btn-block text-white mb-3" (click)="redirectToEditProfile()">Edit Profile</button>
+
+</div>

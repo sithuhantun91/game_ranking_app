@@ -1,0 +1,93 @@
+<!-- HEADER -->
+<app-navigation-bar></app-navigation-bar>
+
+<div class="p-3 text-white">
+  <h3 class="fw-normal fs-3" style="letter-spacing: 1px;">User List</h3>
+
+  <div class="mb-3">
+    <button class="add-new-user-btn btn btn-primary btn-block" (click)="redirectToAddNewUserPage()">Add New User</button>
+  </div>
+
+  <table id="dataTable" class="table table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">No.</th>
+        <th scope="col">Username</th>
+        <th scope="col">Email</th>
+        <th scope="col">Role</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tempUser of players; let i = index;">
+        <td>{{ (i + 1) + ((thePageNumber - 1) * thePageSize) }}</td>
+        <td><i class="fa-solid fa-user"></i>{{ tempUser.firstName | pascalCase }}  {{ tempUser.lastName | pascalCase}}</td>
+        <td>{{ tempUser.email }}</td>
+        <td>{{ tempUser.role.name }}</td>
+        <td>
+          <div *ngIf="loginUserRoleId == 3; else elseBlock">
+            <button class="btn btn-success btn-block mx-2" (click)="redirectToUpdateUserPage(tempUser.id)">Update</button>
+            <button class="btn btn-danger btn-block" (click)="deleteUserClick(tempUser.id)">Delete</button>
+          </div>
+
+          <ng-template #elseBlock>
+            <div *ngIf="loginUserRoleId == 2 && tempUser.role.id < 2; else elseBlock2">
+              <button [disabled]="false" class="btn btn-success btn-block mx-2" (click)="redirectToUpdateUserPage(tempUser.id)">Update</button>
+              <button [disabled]="false" class="btn btn-danger btn-block" (click)="deleteUserClick(tempUser.id)">Delete</button>
+            </div>
+          </ng-template>
+
+          <ng-template #elseBlock2>
+            <div>
+              <button [disabled]="true" class="btn btn-success btn-block mx-2" (click)="redirectToUpdateUserPage(tempUser.id)">Update</button>
+              <button [disabled]="true" class="btn btn-danger btn-block" (click)="deleteUserClick(tempUser.id)">Delete</button>
+            </div>
+          </ng-template>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- begin footer -->
+  <div class="footer-pagination">
+    <div class="row">
+      <div class="col-md-6"></div>
+
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-9" style="padding-left: 30%">
+
+            <ngb-pagination [(page)]="thePageNumber"
+                            [pageSize]="thePageSize"
+                            [collectionSize]="theTotalElements"
+                            [maxSize]="5"
+                            [boundaryLinks]="true"
+                            (pageChange)="listUsers()">
+
+            </ngb-pagination>
+
+          </div>
+
+          <div class="col-md-3 mt-2" style="text-align: right;">
+            <span class="mr-2">Page Size: </span>
+
+            <select #myPageSelect (change)="updatePageSize(myPageSelect.value)">
+              <option selected="true">2</option>
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- end footer -->
+</div>
+<!--<p *ngFor="let tempUser of players">-->
+<!--  {{ tempUser.firstName }}  {{ tempUser.lastName }}-->
+<!--</p>-->

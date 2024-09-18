@@ -1,0 +1,82 @@
+<!-- HEADER -->
+<app-navigation-bar></app-navigation-bar>
+
+<div class="p-3 text-white">
+  <div class="row mb-3">
+    <div class="input-group">
+      <input #myInput type="text" class="form-control" placeholder="Search Clan"
+             (keyup.enter)="doSearch(myInput.value)">
+      <button class="btn btn-dark" (click)="doSearch(myInput.value)"><i class="fa fa-search"></i></button>
+    </div>
+  </div>
+
+  <table id="dataTable" class="table table-hover">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col">No.</th>
+      <th scope="col">Clan</th>
+      <th scope="col">No. of members</th>
+      <th scope="col">Total Trophies</th>
+      <th scope="col">Required Trophies</th>
+      <th scope="col">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tempClan of clans; let i = index;">
+        <td>{{ (i + 1) + ((thePageNumber - 1) * thePageSize) }}</td>
+        <td><i class="fa-solid fa-people-group"></i>{{ tempClan.name | pascalCase }}
+        <td>{{ tempClan.totalMembers }} / {{ tempClan.maxNumOfMembers }}</td>
+        <td><i class="fa-solid fa-trophy"></i>{{ tempClan.totalTrophies }}</td>
+        <td><i class="fa-solid fa-trophy"></i>{{ tempClan.requiredTrophies }}</td>
+        <td>
+          <div>
+            <button class="profile-delete-btn btn btn-success btn-block" (click)="joinClan(tempClan.id)"
+               [disabled]="(loginUser.clan !=null && loginUser.clan.id != 0) || (loginUserRoleId == 2 || loginUserRoleId == 3) || (tempClan.totalMembers == tempClan.maxNumOfMembers)">Join</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- begin footer -->
+  <div class="footer-pagination">
+    <div class="row">
+      <div class="col-md-6"></div>
+
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-9" style="padding-left: 30%">
+
+            <ngb-pagination [(page)]="thePageNumber"
+                            [pageSize]="thePageSize"
+                            [collectionSize]="theTotalElements"
+                            [maxSize]="5"
+                            [boundaryLinks]="true"
+                            (pageChange)="listClans(myInput.value)">
+
+            </ngb-pagination>
+
+          </div>
+
+          <div class="col-md-3 mt-2" style="text-align: right;">
+            <span class="mr-2">Page Size: </span>
+
+            <select #myPageSelect (change)="updatePageSize(myPageSelect.value)">
+              <option selected="true">2</option>
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- end footer -->
+
+  <button id="back-btn" class="btn btn-primary btn-block" (click)="redirectToMyClanPage()">Back</button>
+
+</div>

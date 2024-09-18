@@ -1,0 +1,25 @@
+body {
+  /* background: #0099FF; */
+  background: #90ee90;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+input[type="text"]
+,input[type="email"]
+,input[type="password"]
+,input[type="number"]
+,.form-select
+{
+  border: 1px solid black;
+}
+
+ul > li {
+  list-style-type: none;
+}
+
+a:hover {
+  color: green;
+}

@@ -1,0 +1,112 @@
+<!-- HEADER -->
+<app-navigation-bar></app-navigation-bar>
+
+<div class="p-3 text-white">
+  <h3 class="fw-normal fs-3" style="letter-spacing: 1px;">Battle Log</h3>
+
+  <p *ngIf="battleLogs.length == 0">No Record Found.</p>
+
+  <table *ngIf="battleLogs.length != 0" id="dataTable" class="table table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">No.</th>
+        <th scope="col">Player1</th>
+        <th scope="col">Player2</th>
+        <th scope="col">Winner</th>
+        <th scope="col">Datetime</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let tempBattleLog of battleLogs; let i = index;">
+      <td>{{ (i + 1) + ((thePageNumber - 1) * thePageSize) }}</td>
+
+      <td>
+        <i class="fa-solid fa-user"></i>{{ tempBattleLog.player1.firstName | pascalCase }}  {{ tempBattleLog.player1.lastName | pascalCase}}
+        <br>
+        <div *ngIf="tempBattleLog.player1.clan != null; else elseBlock1">
+          <i class="fa-solid fa-people-group"></i>{{ tempBattleLog.player1.clan.name | pascalCase }}
+        </div>
+        <ng-template #elseBlock1>
+          <p class="m-0">No Clan</p>
+        </ng-template>
+        <i class="fa-solid fa-trophy"></i>{{ tempBattleLog.player1.trophies }}
+      </td>
+
+      <td>
+        <i class="fa-solid fa-user"></i>{{ tempBattleLog.player2.firstName | pascalCase }}  {{ tempBattleLog.player2.lastName | pascalCase}}
+        <br>
+        <div class="m-0" *ngIf="tempBattleLog.player2.clan != null; else elseBlock2">
+          <i class="fa-solid fa-people-group"></i>{{ tempBattleLog.player2.clan.name | pascalCase }}
+        </div>
+        <ng-template #elseBlock2>
+          <p class="m-0">No Clan</p>
+        </ng-template>
+        <i class="fa-solid fa-trophy"></i>{{ tempBattleLog.player2.trophies }}
+      </td>
+
+      <td *ngIf="loginUserId == tempBattleLog.player1.id || loginUserId == tempBattleLog.player2.id; else elseBlock4">
+        <div *ngIf="loginUserId == tempBattleLog.winner; else elseBlock3">
+          Victory
+        </div>
+        <ng-template #elseBlock3>
+          <p>Defeat</p>
+        </ng-template>
+      </td>
+
+      <ng-template #elseBlock4>
+        <td>
+          <div *ngIf="tempBattleLog.player1.id == tempBattleLog.winner; else elseBlock5">
+            Player1
+          </div>
+          <ng-template #elseBlock5>
+            <p>Player2</p>
+          </ng-template>
+        </td>
+      </ng-template>
+
+      <td>
+        {{ tempBattleLog.logTime  | date:'MM-dd-yyyy HH:mm:ss' }}
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- begin footer -->
+  <div *ngIf="battleLogs.length != 0" class="footer-pagination">
+    <div class="row">
+      <div class="col-md-6"></div>
+
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-9" style="padding-left: 30%">
+
+            <ngb-pagination [(page)]="thePageNumber"
+                            [pageSize]="thePageSize"
+                            [collectionSize]="theTotalElements"
+                            [maxSize]="5"
+                            [boundaryLinks]="true"
+                            (pageChange)="listBattleLogs()">
+
+            </ngb-pagination>
+
+          </div>
+
+          <div class="col-md-3 mt-2" style="text-align: right;">
+            <span class="mr-2">Page Size: </span>
+
+            <select #myPageSelect (change)="updatePageSize(myPageSelect.value)">
+              <option selected="true">2</option>
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- end footer -->
+</div>
