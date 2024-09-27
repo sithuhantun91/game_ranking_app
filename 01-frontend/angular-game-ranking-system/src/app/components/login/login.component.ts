@@ -6,6 +6,7 @@ import {Role} from "../../common/role";
 import {User} from "../../common/user";
 import {UserService} from "../../services/user.service";
 import {NavigationBarComponent} from "../navigation-bar/navigation-bar.component";
+import { OktaAuthStateService } from '@okta/okta-angular';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +26,8 @@ export class LoginComponent implements OnInit{
   loginError: boolean = false;
 
   constructor(private router: Router,
-              private userService: UserService,) {
+              private userService: UserService,
+              private oktaAuth: OktaAuthStateService ) {
   }
 
   ngOnInit(): void {
